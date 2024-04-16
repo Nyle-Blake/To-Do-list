@@ -62,6 +62,10 @@ body {
   font-size: 20px;
 }
 
+.listHeader h3 {
+  text-decoration: underline;
+}
+
 .listBody {
   font-size: 18px;
   white-space: pre-line;

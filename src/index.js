@@ -51,8 +51,9 @@ const addGroup = () => {
       const title = prompt("title?")
       const dueDate = prompt("due date?")
       const priority = prompt("priority?")
+      const descriptionLength = prompt("How many bullet points do you want in your list?")
       let description = []
-      for (let i = 0; i < 8; i++) {
+      for (let i = 0; i < descriptionLength; i++) {
         description.push(prompt("Add a bullet to your list"))
       }
 
@@ -128,7 +129,11 @@ const addList = (group, listInfo) => {
     const descriptionArr = groups[group.id]['description']
 
     let description = document.createElement("p")
-    description.textContent = `. ${descriptionArr[0]}\r\n. ${descriptionArr[1]}\r\n. ${descriptionArr[2]}\r\n. ${descriptionArr[3]}\r\n. ${descriptionArr[4]}\r\n. ${descriptionArr[5]}\r\n. ${descriptionArr[6]}\r\n. ${descriptionArr[7]}`
+    description.textContent = ""
+
+    for (let i = 0; i < descriptionArr.length; i++) {
+      description.textContent += `. ${descriptionArr[i]}\r\n`
+    }
     
     divHeader.appendChild(title)
       .insertAdjacentElement('afterend', dueDate)
