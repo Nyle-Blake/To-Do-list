@@ -66,6 +66,12 @@ body {
   text-decoration: underline;
 }
 
+.listHeader span {
+  cursor: pointer;
+  background-color: black;
+  color: red;
+}
+
 .listBody {
   font-size: 18px;
   white-space: pre-line;

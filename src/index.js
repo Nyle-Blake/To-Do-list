@@ -7,15 +7,6 @@ let groups = []
 const addGroup = () => {
   const groupName = document.querySelector("#groupName");
 
-  let groupCount = 0
-
-  class CreateGroupObj {
-    constructor (groupNum) {
-      this.groupNum = groupNum
-    }
-
-  }
-
   const createGroupHtml = (groupName) => {
 
     if (groupName.length <= 1 || groupName.length > 12) {
@@ -25,7 +16,7 @@ const addGroup = () => {
   
     const newDiv = document.createElement("div")
     newDiv.classList.add("group")
-    newDiv.id = groupCount
+    newDiv.id = groups.length
 
     let divHeader = document.createElement("div")
     divHeader.classList.add("groupHeader")
@@ -47,7 +38,7 @@ const addGroup = () => {
     listBtn.textContent = "add list"
 
     listBtn.addEventListener("click", () => {
-      let listCount = 0
+
       let infoArr = []
       const title = prompt("title?")
       const dueDate = prompt("due date?")
@@ -60,9 +51,9 @@ const addGroup = () => {
 
       infoArr.push(title, dueDate, priority, description)
 
-      console.log(listCount)
-      divBody.appendChild(addList(newDiv, infoArr, listCount))
-      listCount++
+      divBody.appendChild(addList(newDiv, infoArr))
+
+      console.log(groups[newDiv.id].length)
     })
 
     divHeader.appendChild(listBtn)
@@ -79,7 +70,7 @@ const addGroup = () => {
       element.value = ""
     });
 
-    return groupCount
+    return groups.length
   }
 
   const createGroupBtn = document.querySelector("#createGroup");
@@ -89,16 +80,20 @@ const addGroup = () => {
 
     groupContainer.appendChild(createGroupHtml(groupName.value))
 
-    groups.push(new CreateGroupObj(groupCount))
+    groups.push([])
     console.log(groups)
     clearInputs()
-    groupCount++
   })
+  console.log(groups.length)
 }
+
+
 
 // list maker func
 
-const addList = (group, listInfo, listCount) => {
+const addList = (group, listInfo) => {
+
+  let listCount = groups[group.id].length
 
   class CreateList {
     constructor(title, dueDate, priority, description) {
@@ -109,12 +104,13 @@ const addList = (group, listInfo, listCount) => {
     }
   }
   
-  groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1], listInfo[2], listInfo[3])
+  groups[group.id].push(new CreateList(listInfo[0], listInfo[1], listInfo[2], listInfo[3]))
 
   const createListHtml = (group) => {
 
     const newDiv = document.createElement("div")
     newDiv.classList.add("list")
+    newDiv.setAttribute("id", listCount)
 
     const divHeader = document.createElement("div")
     divHeader.classList.add("listHeader")
@@ -140,12 +136,29 @@ const addList = (group, listInfo, listCount) => {
       description.textContent += `. ${descriptionArr[i]}\r\n`
     }
 
-    const deleteBtn = document.createElement("button")
-    deleteBtn.textContent = "Delete"
+    const deleteBtn = document.createElement("span")
+    deleteBtn.textContent = "X"
 
-    // deleteBtn.addEventListener("click", () => {
-    //   delete groups[group.id]
-    // })
+    deleteBtn.addEventListener("click", () => {
+      console.log(deleteBtn.parentElement.parentElement.id)
+
+      const groupBody = group.querySelector(".groupBody")
+
+      groupBody.removeChild(newDiv)
+
+      console.log(listCount)
+      groups[group.id].splice(listCount - 1, 1)
+
+      // if (listCount == 1) {
+      //   console.log("less")
+      //   groups[group.id].splice(0, 1)
+      // } else {
+      //   console.log("more")
+      //   groups[group.id].splice(listCount, 1)
+      // }
+
+      console.log(groups)
+    })
     
     divHeader.appendChild(title)
       .insertAdjacentElement('afterend', dueDate)
@@ -154,7 +167,7 @@ const addList = (group, listInfo, listCount) => {
 
     divBody.appendChild(description)
 
-    console.log(group.id, groups)
+    console.log(groups)
 
     return newDiv
   }
