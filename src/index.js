@@ -47,6 +47,7 @@ const addGroup = () => {
     listBtn.textContent = "add list"
 
     listBtn.addEventListener("click", () => {
+      let listCount = 0
       let infoArr = []
       const title = prompt("title?")
       const dueDate = prompt("due date?")
@@ -59,7 +60,9 @@ const addGroup = () => {
 
       infoArr.push(title, dueDate, priority, description)
 
-      divBody.appendChild(addList(newDiv, infoArr))
+      console.log(listCount)
+      divBody.appendChild(addList(newDiv, infoArr, listCount))
+      listCount++
     })
 
     divHeader.appendChild(listBtn)
@@ -75,6 +78,8 @@ const addGroup = () => {
     arr.forEach(element => {
       element.value = ""
     });
+
+    return groupCount
   }
 
   const createGroupBtn = document.querySelector("#createGroup");
@@ -93,7 +98,7 @@ const addGroup = () => {
 
 // list maker func
 
-const addList = (group, listInfo) => {
+const addList = (group, listInfo, listCount) => {
 
   class CreateList {
     constructor(title, dueDate, priority, description) {
@@ -103,8 +108,8 @@ const addList = (group, listInfo) => {
       this.description = description
     }
   }
-
-  groups[group.id] = new CreateList(listInfo[0], listInfo[1], listInfo[2], listInfo[3])
+  
+  groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1], listInfo[2], listInfo[3])
 
   const createListHtml = (group) => {
 
@@ -120,13 +125,13 @@ const addList = (group, listInfo) => {
     newDiv.appendChild(divBody)
 
     let title = document.createElement("h3")
-    title.textContent = groups[group.id]['title']
+    title.textContent = listInfo[0]
     let dueDate = document.createElement("p")
-    dueDate.textContent = `Due-date: ${groups[group.id]['dueDate']}`
+    dueDate.textContent = `Due-date: ${listInfo[1]}`
     let priority = document.createElement("p")
-    priority.textContent = `Priority: ${groups[group.id]['priority']}`
+    priority.textContent = `Priority: ${listInfo[2]}`
 
-    const descriptionArr = groups[group.id]['description']
+    const descriptionArr = listInfo[3]
 
     let description = document.createElement("p")
     description.textContent = ""
@@ -134,14 +139,22 @@ const addList = (group, listInfo) => {
     for (let i = 0; i < descriptionArr.length; i++) {
       description.textContent += `. ${descriptionArr[i]}\r\n`
     }
+
+    const deleteBtn = document.createElement("button")
+    deleteBtn.textContent = "Delete"
+
+    // deleteBtn.addEventListener("click", () => {
+    //   delete groups[group.id]
+    // })
     
     divHeader.appendChild(title)
       .insertAdjacentElement('afterend', dueDate)
       .insertAdjacentElement('afterend', priority)
+      .insertAdjacentElement('afterend', deleteBtn)
 
     divBody.appendChild(description)
 
-    console.log(group.id)
+    console.log(group.id, groups)
 
     return newDiv
   }

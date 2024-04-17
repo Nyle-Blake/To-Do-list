@@ -39,7 +39,7 @@ body {
 
 .groupBody {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 10px;
   padding: 8px;
 }
@@ -58,7 +58,7 @@ body {
 .listHeader {
   display: flex;
   justify-content: space-around;
-  padding-right: 50%;
+  padding-right: 20%;
   font-size: 20px;
 }
 
