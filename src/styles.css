@@ -4,21 +4,29 @@
 }
 
 body {
-  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.background {
+  height: 28vh;
+  width: 100vw;
+  background-color: rgb(5, 5, 107);
 }
 
 .container {
-  height: 700px;
-  width: 100%;
-  padding: 15px;
-  border-radius: 16px;
-  background-color: darkgoldenrod;
+  height: 100vh;
+  width: 100vw;
+  padding-top: 15px;
+  background-color: rgb(228, 228, 222);
 }
 
 .div1 {
   height: 600px;
+  width: 100vw;
   padding: 20px;
-  border-radius: 16px;
   margin: 6px;
   background-color: grey;
 }
@@ -50,7 +58,8 @@ body {
   padding: 4px;
   border-radius: 10px;
   gap: 15px;
-  background-color: orange;
+  background-color: #000;
+  color: #fff;
   overflow: auto;
   margin-bottom: 8px;
 }
