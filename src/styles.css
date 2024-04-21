@@ -3,30 +3,31 @@
   padding: 0;
 }
 
-body {
+.background {
+  height: 28vh;
+  width: 100vw;
+  background-color: rgb(1, 1, 49);
+}
+
+.container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.background {
-  height: 28vh;
-  width: 100vw;
-  background-color: rgb(5, 5, 107);
-}
-
-.container {
   height: 100vh;
   width: 100vw;
   padding-top: 15px;
   background-color: rgb(228, 228, 222);
 }
 
+.input {
+  width: 10vw;
+}
+
 .div1 {
-  height: 600px;
+  height: 100vh;
   width: 100vw;
-  padding: 20px;
+  padding-top: 20px;
   margin: 6px;
   background-color: grey;
 }
@@ -84,4 +85,97 @@ body {
 .listBody {
   font-size: 18px;
   white-space: pre-line;
+}
+
+
+.star{
+  position:relative;
+  width:1em;
+  font-size:0.7em;
+}
+
+.star:before{
+  content:"";
+  position:absolute;
+  background:#fff;
+  width:1em;
+  height:1.15em;
+  transform:rotate(-45deg) skewX(22.5deg) skewY(22.5deg);
+}
+
+.star:after{
+  content:"";
+  position:absolute;
+  background:#fff;
+  width:1em;
+  height:1.15em;
+  transform:rotate(45deg) skewX(22.5deg) skewY(22.5deg);
+}
+
+#star1 {
+  left: 20%;
+  top: 20%;
+}
+
+#star2 {
+  left: 40%;
+  top: 18%;
+}
+
+#star3 {
+  left: 90%;
+  top: 45%;
+}
+
+#star4 {
+  left: 50%;
+  top: 60%;
+}
+
+#star5 {
+  left: 80%;
+  top: 56%;
+}
+
+#star6 {
+  left: 65%;
+  top: 80%;
+}
+
+#star7 {
+  left: 5%;
+  top: 10%;
+}
+
+#star8 {
+  left: 69%;
+  top: 20%;
+}
+
+#star9 {
+  left: 30%;
+  top: 75%;
+}
+
+#star0 {
+  left: 10%;
+  top: 60%;
+}
+
+
+.moon {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 10px 10px 0 0 #fff;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  background-color: rgb(228, 228, 222);
 }
