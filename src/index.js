@@ -169,3 +169,13 @@ const addList = (group, listInfo) => {
 
   return createListHtml(group)
 }
+
+// open form functions
+
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
