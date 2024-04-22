@@ -2,6 +2,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif
 }
 
 .background {
@@ -18,7 +19,7 @@
   height: 100vh;
   width: 100vw;
   padding-top: 15px;
-  background-color: #545C52;
+  background: rgba(26,27,65,1);
 }
 
 .input {
@@ -29,6 +30,9 @@
 }
 
 .div1 {
+  display: flex;
+  flex-direction: column;
+  gap: 3vh;
   height: 100vh;
   width: 100vw;
   padding-top: 20px;
@@ -64,7 +68,7 @@
   padding: 4px;
   border-radius: 10px;
   gap: 15px;
-  background-color: #545C52;
+  background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
   color: #fff;
   overflow: auto;
   margin-bottom: 8px;
@@ -72,7 +76,7 @@
 
 .listHeader {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-right: 20%;
   font-size: 20px;
 }
@@ -88,6 +92,8 @@
 }
 
 .listBody {
+  padding-left: 6%;
+  padding-top: 10px;
   font-size: 18px;
   white-space: pre-line;
 }
@@ -188,16 +194,38 @@ footer {
 
 /* start of form */
 
-/* Button used to open the contact form - fixed at the bottom of the page */
+/* Button used to open the create group form */
 .open-button {
-  background-color: #3d48a5;
-  color: white;
-  padding: 16px 20px;
-  border: none;
-  cursor: pointer;
-  opacity: 0.8;
-  width: 280px;
+  background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
   border-radius: 8px;
+  border-style: none;
+  box-sizing: border-box;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex-shrink: 0;
+  font-family: "Inter UI","SF Pro Display",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  height: 4rem;
+  padding: 0 1.6rem;
+  text-align: center;
+  text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+  transition: all .5s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  margin-bottom: 2vh;
+}
+
+.open-button:hover {
+  box-shadow: rgba(80, 63, 205, 1) 0 1px 50px;
+  transition-duration: .1s;
+}
+
+@media (min-width: 768px) {
+  .open-button {
+    padding: 0 2.6rem;
+  }
 }
 
 /* The popup form - hidden by default */
@@ -214,8 +242,8 @@ footer {
 /* Add styles to the form container */
 .form-container {
   max-width: 300px;
-  padding: 10px;
-  background-color: #3d48a5;
+  padding: 16px;
+  background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
   border-radius: 14px;
 }
 
@@ -226,6 +254,8 @@ footer {
   margin: 5px 0 22px 0;
   border: none;
   background: #f1f1f1;
+  font-size: 14px;
+  border-radius: 8px;
 }
 
 /* When the inputs get focus, do something */
@@ -244,6 +274,7 @@ footer {
   width: 100%;
   margin-bottom:10px;
   opacity: 0.8;
+  border-radius: 8px;
 }
 
 /* Add a red background color to the cancel button */
