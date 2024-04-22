@@ -27,27 +27,21 @@
       <!-- start of form -->
 
       <!-- A button to open the popup form -->
-<button class="open-button" onclick="openForm()">Open Form</button>
+<button class="open-button">Create group</button>
 
 <!-- The form -->
 <div class="form-popup" id="myForm">
   <form action="/action_page.php" class="form-container">
-    <h1>Login</h1>
+    <h3>Group Name:</h3>
 
-    <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
+    <input class="groupNameInput" type="text" placeholder="Enter Name" name="email" required>
 
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="psw" required>
-
-    <button type="submit" class="btn">Login</button>
-    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+    <button type="button" class="btn create-btn">Create</button>
+    <button type="button" class="btn cancel">Cancel</button>
   </form>
 </div>
 
       <!-- end of form -->
-      <input type="text" id="groupName" class="input">
-      <button id="createGroup">Create a group</button>
 
       <div class="div1"></div>
     </div>

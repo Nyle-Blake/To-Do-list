@@ -74,17 +74,18 @@ const clearInputs = () => {
 }
 
 // vent listener to create groups
-const createGroupBtn = document.querySelector("#createGroup");
+const createGroupBtn = document.querySelector(".create-btn");
 
 createGroupBtn.addEventListener("click", () => {
   const groupContainer = document.querySelector(".div1");
-  const groupName = document.querySelector("#groupName");
+  const groupName = document.querySelector(".groupNameInput");
 
   groupContainer.appendChild(createGroupHtml(groupName.value))
 
   groups.push({})
   console.log(groups)
   clearInputs()
+  closeForm()
   groupCount++
 })
 console.log(groups.length)
@@ -170,7 +171,7 @@ const addList = (group, listInfo) => {
   return createListHtml(group)
 }
 
-// open form functions
+// open/close form functions
 
 function openForm() {
   document.getElementById("myForm").style.display = "block";
@@ -179,3 +180,15 @@ function openForm() {
 function closeForm() {
   document.getElementById("myForm").style.display = "none";
 }
+
+const openBtn = document.querySelector(".open-button")
+
+openBtn.addEventListener("click", () => {
+  openForm()
+})
+
+const closeBtn = document.querySelector(".cancel")
+
+closeBtn.addEventListener("click", () => {
+  closeForm()
+})

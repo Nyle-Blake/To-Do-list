@@ -190,33 +190,33 @@ footer {
 
 /* Button used to open the contact form - fixed at the bottom of the page */
 .open-button {
-  background-color: #555;
+  background-color: #3d48a5;
   color: white;
   padding: 16px 20px;
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  position: fixed;
-  bottom: 0;
-  right: 0;
   width: 280px;
+  border-radius: 8px;
 }
 
 /* The popup form - hidden by default */
 .form-popup {
   display: none;
-  position: fixed;
-  bottom: 0;
-  right: 15px;
-  border: 3px solid #f1f1f1;
+  position: absolute;
+  top: 42vh;
+  border: 3px solid #F1F1F1;
   z-index: 9;
+  border-radius: 14px;
+  color: #FFFFFF;
 }
 
 /* Add styles to the form container */
 .form-container {
   max-width: 300px;
   padding: 10px;
-  background-color: white;
+  background-color: #3d48a5;
+  border-radius: 14px;
 }
 
 /* Full-width input fields */
@@ -229,7 +229,7 @@ footer {
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+.form-container input[type=text]:focus{
   background-color: #ddd;
   outline: none;
 }
