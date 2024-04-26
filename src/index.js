@@ -2,7 +2,7 @@ import './styles.css';
 
 // group maker func
 
-let groups = []
+let groups = {}
 let groupCount = 0
 
 const createGroupHtml = (groupName) => {
@@ -35,6 +35,8 @@ const createGroupHtml = (groupName) => {
   listBtn.classList.add("createListBtn")
   listBtn.textContent = "add list"
 
+  divHeader.appendChild(listBtn)
+
   // event listener to add a list to a group
   listBtn.addEventListener("click", () => {
 
@@ -54,7 +56,22 @@ const createGroupHtml = (groupName) => {
 
   })
 
-  divHeader.appendChild(listBtn)
+  const deleteBtn = document.createElement("span")
+  deleteBtn.textContent = "X"
+
+  divHeader.appendChild(deleteBtn)
+
+  // event listener to delete a group
+  deleteBtn.addEventListener("click", () => {
+
+    const groupContainer = document.querySelector(".div1")
+
+    groupContainer.removeChild(newDiv)
+
+    delete groups[newDiv.id]
+
+    console.log(newDiv.id, "group deleted")
+  })
 
   return newDiv
 }
@@ -82,13 +99,16 @@ createGroupBtn.addEventListener("click", () => {
 
   groupContainer.appendChild(createGroupHtml(groupName.value))
 
-  groups.push({})
+  groups[groupCount] = {}
   console.log(groups)
   clearInputs()
   closeForm()
   groupCount++
 })
 console.log(groups.length)
+
+
+
 
 
 // list maker funcs
@@ -151,7 +171,7 @@ const addList = (group, listInfo) => {
 
       delete groups[group.id][newDiv.id]
 
-      console.log(listCount, "hi")
+      console.log(listCount, "list deleted")
       console.log(groups)
     })
     
