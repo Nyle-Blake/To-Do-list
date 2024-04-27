@@ -33,7 +33,7 @@ const createGroupHtml = (groupName) => {
 
   let listBtn = document.createElement("button")
   listBtn.classList.add("createListBtn")
-  listBtn.textContent = "add list"
+  listBtn.textContent = "add item"
 
   divHeader.appendChild(listBtn)
 
@@ -41,30 +41,32 @@ const createGroupHtml = (groupName) => {
   listBtn.addEventListener("click", () => {
 
     let infoArr = []
-    const title = prompt("title?")
+    const content = `. ${prompt("title?")}`
     const dueDate = prompt("due date?")
     const priority = prompt("priority?")
-    const descriptionLength = prompt("How many bullet points do you want in your list?")
-    let description = []
-    for (let i = 0; i < descriptionLength; i++) {
-      description.push(prompt("Add a bullet to your list"))
-    }
 
-    infoArr.push(title, dueDate, priority, description)
+    infoArr.push(content, dueDate, priority)
 
     divBody.appendChild(addList(newDiv, infoArr))
 
   })
 
-  const deleteBtn = document.createElement("span")
-  deleteBtn.textContent = "X"
+  const deleteBtn = document.createElement("div")
+  deleteBtn.classList.add("deleteBtn")
+
+  const deleteBtnInner = document.createElement("div")
+
+  deleteBtn.appendChild(deleteBtnInner)
 
   divHeader.appendChild(deleteBtn)
 
   // event listener to delete a group
-  deleteBtn.addEventListener("click", () => {
+  deleteBtn.addEventListener("mousedown", () => {
+    deleteBtnInner.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
+  })
+  deleteBtn.addEventListener("mouseup", () => {
 
-    const groupContainer = document.querySelector(".div1")
+    const groupContainer = document.querySelector(".group-container")
 
     groupContainer.removeChild(newDiv)
 
@@ -94,8 +96,8 @@ const clearInputs = () => {
 const createGroupBtn = document.querySelector(".create-btn");
 
 createGroupBtn.addEventListener("click", () => {
-  const groupContainer = document.querySelector(".div1");
-  const groupName = document.querySelector(".groupNameInput");
+  const groupContainer = document.querySelector(".group-container");
+  const groupName = document.querySelector(".name-input");
 
   groupContainer.appendChild(createGroupHtml(groupName.value))
 
@@ -117,18 +119,15 @@ let listCount = 0
 
 const addList = (group, listInfo) => {
 
-  //let listCount = groups[group.id].length
-
   class CreateList {
-    constructor(title, dueDate, priority, description) {
-      this.title = title
+    constructor(content, dueDate, priority) {
+      this.content = content
       this.dueDate = dueDate
       this.priority = priority
-      this.description = description
     }
   }
   
-  groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1], listInfo[2], listInfo[3])
+  groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1], listInfo[2])
 
   const createListHtml = (group) => {
 
@@ -144,26 +143,26 @@ const addList = (group, listInfo) => {
     divBody.classList.add("listBody")
     newDiv.appendChild(divBody)
 
-    let title = document.createElement("h3")
-    title.textContent = listInfo[0]
+    let content = document.createElement("h3")
+    content.textContent = listInfo[0]
     let dueDate = document.createElement("p")
     dueDate.textContent = `Due-date: ${listInfo[1]}`
     let priority = document.createElement("p")
     priority.textContent = `Priority: ${listInfo[2]}`
 
-    const descriptionArr = listInfo[3]
+    const deleteBtn = document.createElement("div")
+    deleteBtn.classList.add("deleteBtn")
 
-    let description = document.createElement("p")
-    description.textContent = ""
+    const deleteBtnInner = document.createElement("div")
 
-    for (let i = 0; i < descriptionArr.length; i++) {
-      description.textContent += `. ${descriptionArr[i]}\r\n`
-    }
+    deleteBtn.appendChild(deleteBtnInner)
 
-    const deleteBtn = document.createElement("span")
-    deleteBtn.textContent = "X"
+    // event listeners to delete a list
+    deleteBtn.addEventListener("mousedown", () => {
+      deleteBtnInner.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
+    })
 
-    deleteBtn.addEventListener("click", () => {
+    deleteBtn.addEventListener("mouseup", () => {
 
       const groupBody = group.querySelector(".groupBody")
 
@@ -171,16 +170,14 @@ const addList = (group, listInfo) => {
 
       delete groups[group.id][newDiv.id]
 
-      console.log(listCount, "list deleted")
-      console.log(groups)
+      console.log(listCount, "list deleted", groups)
     })
     
-    divHeader.appendChild(title)
-      .insertAdjacentElement('afterend', dueDate)
+    divHeader.appendChild(deleteBtn)
       .insertAdjacentElement('afterend', priority)
-      .insertAdjacentElement('afterend', deleteBtn)
+      .insertAdjacentElement('afterend', dueDate)
 
-    divBody.appendChild(description)
+    divBody.appendChild(content)
 
     console.log(groups)
 
@@ -211,4 +208,5 @@ const closeBtn = document.querySelector(".cancel")
 
 closeBtn.addEventListener("click", () => {
   closeForm()
+  clearInputs()
 })

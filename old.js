@@ -2,7 +2,7 @@ import './styles.css';
 
 // group maker func
 
-let groups = []
+let groups = {}
 let groupCount = 0
 
 const createGroupHtml = (groupName) => {
@@ -63,7 +63,14 @@ const createGroupHtml = (groupName) => {
 
   // event listener to delete a group
   deleteBtn.addEventListener("click", () => {
-    // Delete group div and delete group from gorups array
+
+    const groupContainer = document.querySelector(".group-container")
+
+    groupContainer.removeChild(newDiv)
+
+    delete groups[newDiv.id]
+
+    console.log(newDiv.id, "group deleted")
   })
 
   return newDiv
@@ -87,12 +94,12 @@ const clearInputs = () => {
 const createGroupBtn = document.querySelector(".create-btn");
 
 createGroupBtn.addEventListener("click", () => {
-  const groupContainer = document.querySelector(".div1");
-  const groupName = document.querySelector(".groupNameInput");
+  const groupContainer = document.querySelector(".group-container");
+  const groupName = document.querySelector(".group-name-input");
 
   groupContainer.appendChild(createGroupHtml(groupName.value))
 
-  groups.push({})
+  groups[groupCount] = {}
   console.log(groups)
   clearInputs()
   closeForm()
@@ -101,13 +108,14 @@ createGroupBtn.addEventListener("click", () => {
 console.log(groups.length)
 
 
+
+
+
 // list maker funcs
 
 let listCount = 0
 
 const addList = (group, listInfo) => {
-
-  //let listCount = groups[group.id].length
 
   class CreateList {
     constructor(title, dueDate, priority, description) {
@@ -161,8 +169,7 @@ const addList = (group, listInfo) => {
 
       delete groups[group.id][newDiv.id]
 
-      console.log(listCount, "hi")
-      console.log(groups)
+      console.log(listCount, "list deleted", groups)
     })
     
     divHeader.appendChild(title)
@@ -201,4 +208,5 @@ const closeBtn = document.querySelector(".cancel")
 
 closeBtn.addEventListener("click", () => {
   closeForm()
+  clearInputs()
 })
