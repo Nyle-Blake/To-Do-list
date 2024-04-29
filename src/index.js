@@ -1,10 +1,33 @@
 import './styles.css';
 
-// group maker func
+const groupContainer = document.querySelector(".group-container")
 
-let groups = {}
-let groupCount = 0
+groupContainer.innerHTML = localStorage.getItem("groupsHtml")
 
+// initialise groups obj and groupsObj key value pair in localStorage
+let groups
+
+if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
+  groups = {}
+  localStorage.setItem("groupsObj", {})
+} else {
+  groups = JSON.parse(localStorage.getItem("groupsObj"))
+}
+
+//initialise groupCount variable and groupCount key value pair in localStorage
+
+let groupCount
+
+if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
+  groupCount = 0
+  localStorage.setItem("groupCount", 0)
+} else {
+  groupCount = localStorage.getItem("groupCount")
+}
+
+console.log(groupCount)
+
+// creates Html of a group and has listBtn eventListener and deleteBtn eventlistener
 const createGroupHtml = (groupName) => {
 
   if (groupName.length <= 1 || groupName.length > 12) {
@@ -49,10 +72,16 @@ const createGroupHtml = (groupName) => {
 
     divBody.appendChild(addList(newDiv, infoArr))
 
+    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+    localStorage.setItem("groupsObj", JSON.stringify(groups))
+
+    listCount++
+    localStorage.setItem("listCount", listCount)
   })
 
   const deleteBtn = document.createElement("div")
   deleteBtn.classList.add("deleteBtn")
+  deleteBtn.setAttribute("id", groupCount)
 
   const deleteBtnInner = document.createElement("div")
 
@@ -60,10 +89,11 @@ const createGroupHtml = (groupName) => {
 
   divHeader.appendChild(deleteBtn)
 
-  // event listener to delete a group
+  // event listeners to delete a group
   deleteBtn.addEventListener("mousedown", () => {
     deleteBtnInner.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
   })
+
   deleteBtn.addEventListener("mouseup", () => {
 
     const groupContainer = document.querySelector(".group-container")
@@ -72,11 +102,35 @@ const createGroupHtml = (groupName) => {
 
     delete groups[newDiv.id]
 
+    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+    localStorage.setItem("groupsObj", JSON.stringify(groups))
+
     console.log(newDiv.id, "group deleted")
   })
 
   return newDiv
 }
+
+//test
+
+const deleteButtonArr = Array.from(document.querySelectorAll(".deleteBtn"))
+
+deleteButtonArr.forEach(item => {
+  item.addEventListener("click", () => {
+    const parent = item.parentElement.parentElement
+    console.log(parent)
+    groupContainer.removeChild(parent)
+
+    delete groups[item.id]
+
+    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+    localStorage.setItem("groupsObj", JSON.stringify(groups))
+
+    console.log(item.id, "group deleted")
+  })
+});
+
+//test
 
 
 // clears inputs from all input elements
@@ -85,37 +139,51 @@ const clearInputs = () => {
 
   let arr = Array.from(inputs)
 
-  arr.forEach(element => {
-    element.value = ""
+  arr.forEach(elem => {
+    elem.value = ""
   });
 
   return groups.length
 }
 
-// vent listener to create groups
+// event listener to create groups
 const createGroupBtn = document.querySelector(".create-btn");
 
 createGroupBtn.addEventListener("click", () => {
-  const groupContainer = document.querySelector(".group-container");
-  const groupName = document.querySelector(".name-input");
+  const nameInput = document.querySelector(".name-input");
 
-  groupContainer.appendChild(createGroupHtml(groupName.value))
+  groupContainer.appendChild(createGroupHtml(nameInput.value))
 
   groups[groupCount] = {}
   console.log(groups)
   clearInputs()
   closeForm()
+  localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+  localStorage.setItem("groupsObj", JSON.stringify(groups))
   groupCount++
+  localStorage.setItem("groupCount", groupCount)
 })
-console.log(groups.length)
+
+const inputForm = document.querySelector(".form-popup")
+
+// prevents the form being able to be submitted by just pressing enter
+inputForm.addEventListener("submit", (e) => {
+  e.preventDefault()
+})
 
 
 
 
 
-// list maker funcs
+// creates lists/tasks
+let listCount
 
-let listCount = 0
+if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
+  listCount = 0
+  localStorage.setItem("listCount", 0)
+} else {
+  groups = localStorage.getItem("listCount")
+}
 
 const addList = (group, listInfo) => {
 
@@ -170,6 +238,9 @@ const addList = (group, listInfo) => {
 
       delete groups[group.id][newDiv.id]
 
+      localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+      localStorage.setItem("groupsObj", JSON.stringify(groups))
+
       console.log(listCount, "list deleted", groups)
     })
     
@@ -181,7 +252,6 @@ const addList = (group, listInfo) => {
 
     console.log(groups)
 
-    listCount++
     return newDiv
   }
 
