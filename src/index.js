@@ -9,10 +9,12 @@ let groups
 
 if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
   groups = {}
-  localStorage.setItem("groupsObj", {})
+  localStorage.setItem("groupsObj", JSON.stringify({}))
 } else {
-  groups = JSON.parse(localStorage.getItem("groupsObj"))
+  groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
 }
+
+console.log(groups)
 
 //initialise groupCount variable and groupCount key value pair in localStorage
 
@@ -20,7 +22,7 @@ let groupCount
 
 if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
   groupCount = 0
-  localStorage.setItem("groupCount", 0)
+  localStorage.setItem("groupCount", groupCount)
 } else {
   groupCount = localStorage.getItem("groupCount")
 }
@@ -111,15 +113,15 @@ const createGroupHtml = (groupName) => {
   return newDiv
 }
 
-//test
+//used to delete groups that were made before a reload
 
-const deleteButtonArr = Array.from(document.querySelectorAll(".deleteBtn"))
+const groupDeleteButtonArr = Array.from(document.querySelectorAll(".deleteBtn"))
 
-deleteButtonArr.forEach(item => {
+groupDeleteButtonArr.forEach(item => {
   item.addEventListener("click", () => {
     const parent = item.parentElement.parentElement
     console.log(parent)
-    groupContainer.removeChild(parent)
+    groupContainer.removeChild(parent, item)
 
     delete groups[item.id]
 
@@ -127,10 +129,9 @@ deleteButtonArr.forEach(item => {
     localStorage.setItem("groupsObj", JSON.stringify(groups))
 
     console.log(item.id, "group deleted")
+    console.log(groups)
   })
 });
-
-//test
 
 
 // clears inputs from all input elements
@@ -142,8 +143,6 @@ const clearInputs = () => {
   arr.forEach(elem => {
     elem.value = ""
   });
-
-  return groups.length
 }
 
 // event listener to create groups
@@ -154,6 +153,7 @@ createGroupBtn.addEventListener("click", () => {
 
   groupContainer.appendChild(createGroupHtml(nameInput.value))
 
+  console.log(groupCount, groups)
   groups[groupCount] = {}
   console.log(groups)
   clearInputs()
@@ -180,9 +180,9 @@ let listCount
 
 if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
   listCount = 0
-  localStorage.setItem("listCount", 0)
+  localStorage.setItem("listCount", listCount)
 } else {
-  groups = localStorage.getItem("listCount")
+  listCount = localStorage.getItem("listCount")
 }
 
 const addList = (group, listInfo) => {
@@ -201,6 +201,7 @@ const addList = (group, listInfo) => {
 
     const newDiv = document.createElement("div")
     newDiv.classList.add("list")
+    console.log(listCount, "listCo")
     newDiv.setAttribute("id", listCount)
 
     const divHeader = document.createElement("div")
@@ -219,7 +220,7 @@ const addList = (group, listInfo) => {
     priority.textContent = `Priority: ${listInfo[2]}`
 
     const deleteBtn = document.createElement("div")
-    deleteBtn.classList.add("deleteBtn")
+    deleteBtn.classList.add("listDeleteBtn", "deleteBtn")
 
     const deleteBtnInner = document.createElement("div")
 
@@ -257,6 +258,57 @@ const addList = (group, listInfo) => {
 
   return createListHtml(group)
 }
+
+//event listener to create a list
+
+const listButtonArr = Array.from(document.querySelectorAll(".createListBtn"))
+
+listButtonArr.forEach(item => {
+  item.addEventListener("click", () => {
+    const parent = item.parentElement.parentElement
+    console.log(parent)
+
+    let infoArr = []
+    const content = `. ${prompt("title?")}`
+    const dueDate = prompt("due date?")
+    const priority = prompt("priority?")
+
+    infoArr.push(content, dueDate, priority)
+
+    item.parentElement.nextSibling.appendChild(addList(parent, infoArr))
+
+    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+    localStorage.setItem("groupsObj", JSON.stringify(groups))
+
+    listCount++
+    localStorage.setItem("listCount", listCount)
+  })
+});
+
+// event listener to delete a list
+
+const listDeleteButtonArr = Array.from(document.querySelectorAll(".listDeleteBtn"))
+
+listDeleteButtonArr.forEach(item => {
+
+  item.addEventListener("mousedown", () => {
+    item.firstChild.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
+  })
+
+  item.addEventListener("click", () => {
+    const groupBody = item.parentElement.parentElement.parentElement
+    console.log(groupBody)
+    groupBody.removeChild(item.parentElement.parentElement)
+
+    delete groups[item.id]
+
+    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+    localStorage.setItem("groupsObj", JSON.stringify(groups))
+
+    console.log(item.id, "group deleted")
+    console.log(groups)
+  })
+});
 
 // open/close form functions
 
