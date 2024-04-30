@@ -66,7 +66,7 @@
 .list {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 8px;
   border-radius: 8px;
   gap: 4px;
   background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
@@ -79,7 +79,7 @@
   display: flex;
   justify-content: space-between;
   padding-right: 20%;
-  font-size: 20px;
+  font-size: 16px;
 }
 
 .listHeader h3 {
@@ -130,25 +130,43 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #FFFFFF;
+  border: 1.5px solid grey;
+  padding: 1px;
+}
+
+.deleteBtn {
   width: 1.8rem;
   height: 1.8rem;
-  background-color: #FFFFFF;
   border-radius: calc(1.8rem / 2);
-  border: 1px solid grey;
-  padding: 1px;
+}
+
+.listDeleteBtn {
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: calc(1.4rem / 2);
+}
+
+.deleteBtn div, .listDeleteBtn div {
+  background-color: #FFFFFF;
 }
 
 .deleteBtn div {
   height: 1.3rem;
-  width: 1.2rem;
-  background-color: #FFFFFF;
+  width: 1.3rem;
   border-radius: calc(1.8rem / 2);
+}
+
+.listDeleteBtn div {
+  height: 1rem;
+  width: 1rem;
+  border-radius: calc(1.4rem / 2);
 }
 
 
 .star{
   position:relative;
-  width:1em;
+  width:1.2rem;
   font-size:0.7em;
   box-shadow: 0px 0px 50px 11px #FFFFFF;
 }
@@ -169,6 +187,11 @@
   width:1em;
   height:1.15em;
   transform:rotate(45deg) skewX(22.5deg) skewY(22.5deg);
+}
+
+.star:hover {
+  transform: scale(1.1, 1.1);
+  box-shadow: 0px 0px 50px 15px #FFFFFF;
 }
 
 #star1 {

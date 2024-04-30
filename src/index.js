@@ -2,33 +2,6 @@ import './styles.css';
 
 const groupContainer = document.querySelector(".group-container")
 
-groupContainer.innerHTML = localStorage.getItem("groupsHtml")
-
-// initialise groups obj and groupsObj key value pair in localStorage
-let groups
-
-if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
-  groups = {}
-  localStorage.setItem("groupsObj", JSON.stringify({}))
-} else {
-  groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
-}
-
-console.log(groups)
-
-//initialise groupCount variable and groupCount key value pair in localStorage
-
-let groupCount
-
-if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
-  groupCount = 0
-  localStorage.setItem("groupCount", groupCount)
-} else {
-  groupCount = localStorage.getItem("groupCount")
-}
-
-console.log(groupCount)
-
 // creates Html of a group and has listBtn eventListener and deleteBtn eventlistener
 const createGroupHtml = (groupName) => {
 
@@ -62,25 +35,6 @@ const createGroupHtml = (groupName) => {
 
   divHeader.appendChild(listBtn)
 
-  // event listener to add a list to a group
-  listBtn.addEventListener("click", () => {
-
-    let infoArr = []
-    const content = `. ${prompt("title?")}`
-    const dueDate = prompt("due date?")
-    const priority = prompt("priority?")
-
-    infoArr.push(content, dueDate, priority)
-
-    divBody.appendChild(addList(newDiv, infoArr))
-
-    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-    localStorage.setItem("groupsObj", JSON.stringify(groups))
-
-    listCount++
-    localStorage.setItem("listCount", listCount)
-  })
-
   const deleteBtn = document.createElement("div")
   deleteBtn.classList.add("deleteBtn")
   deleteBtn.setAttribute("id", groupCount)
@@ -91,47 +45,36 @@ const createGroupHtml = (groupName) => {
 
   divHeader.appendChild(deleteBtn)
 
-  // event listeners to delete a group
-  deleteBtn.addEventListener("mousedown", () => {
-    deleteBtnInner.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
-  })
-
-  deleteBtn.addEventListener("mouseup", () => {
-
-    const groupContainer = document.querySelector(".group-container")
-
-    groupContainer.removeChild(newDiv)
-
-    delete groups[newDiv.id]
-
-    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-    localStorage.setItem("groupsObj", JSON.stringify(groups))
-
-    console.log(newDiv.id, "group deleted")
-  })
-
   return newDiv
 }
 
-//used to delete groups that were made before a reload
+// function that adds a listener to group delete buttons
+const addGroupDeleteBtnEvent = () => {
 
-const groupDeleteButtonArr = Array.from(document.querySelectorAll(".deleteBtn"))
+  const groupDeleteButtonArr = Array.from(document.querySelectorAll(".deleteBtn"))
 
-groupDeleteButtonArr.forEach(item => {
-  item.addEventListener("click", () => {
-    const parent = item.parentElement.parentElement
-    console.log(parent)
-    groupContainer.removeChild(parent, item)
+  groupDeleteButtonArr.forEach(item => {
 
-    delete groups[item.id]
+    item.addEventListener("mousedown", () => {
+      item.firstChild.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
+    })
+    // deletes group
+    item.addEventListener("click", () => {
+      const parent = item.parentElement.parentElement
+      console.log(parent)
+      groupContainer.removeChild(parent, item)
 
-    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-    localStorage.setItem("groupsObj", JSON.stringify(groups))
+      delete groups[item.id]
 
-    console.log(item.id, "group deleted")
-    console.log(groups)
-  })
-});
+      localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+      localStorage.setItem("groupsObj", JSON.stringify(groups))
+
+      console.log(item.id, "group deleted")
+      console.log(groups)
+    })
+
+  });
+}
 
 
 // clears inputs from all input elements
@@ -158,6 +101,8 @@ createGroupBtn.addEventListener("click", () => {
   console.log(groups)
   clearInputs()
   closeForm()
+  addGroupDeleteBtnEvent()
+  addListButtonEvent()
   localStorage.setItem("groupsHtml", groupContainer.innerHTML)
   localStorage.setItem("groupsObj", JSON.stringify(groups))
   groupCount++
@@ -176,14 +121,6 @@ inputForm.addEventListener("submit", (e) => {
 
 
 // creates lists/tasks
-let listCount
-
-if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
-  listCount = 0
-  localStorage.setItem("listCount", listCount)
-} else {
-  listCount = localStorage.getItem("listCount")
-}
 
 const addList = (group, listInfo) => {
 
@@ -197,7 +134,7 @@ const addList = (group, listInfo) => {
   
   groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1], listInfo[2])
 
-  const createListHtml = (group) => {
+  const createListHtml = () => { // group as parameter
 
     const newDiv = document.createElement("div")
     newDiv.classList.add("list")
@@ -220,31 +157,12 @@ const addList = (group, listInfo) => {
     priority.textContent = `Priority: ${listInfo[2]}`
 
     const deleteBtn = document.createElement("div")
-    deleteBtn.classList.add("listDeleteBtn", "deleteBtn")
+    deleteBtn.classList.add("listDeleteBtn")
 
     const deleteBtnInner = document.createElement("div")
 
     deleteBtn.appendChild(deleteBtnInner)
 
-    // event listeners to delete a list
-    deleteBtn.addEventListener("mousedown", () => {
-      deleteBtnInner.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
-    })
-
-    deleteBtn.addEventListener("mouseup", () => {
-
-      const groupBody = group.querySelector(".groupBody")
-
-      groupBody.removeChild(newDiv)
-
-      delete groups[group.id][newDiv.id]
-
-      localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-      localStorage.setItem("groupsObj", JSON.stringify(groups))
-
-      console.log(listCount, "list deleted", groups)
-    })
-    
     divHeader.appendChild(deleteBtn)
       .insertAdjacentElement('afterend', priority)
       .insertAdjacentElement('afterend', dueDate)
@@ -256,61 +174,121 @@ const addList = (group, listInfo) => {
     return newDiv
   }
 
-  return createListHtml(group)
+  return createListHtml() //groups as arg
 }
 
-//event listener to create a list
+// function to add event listener to add list button
+const addListButtonEvent = () => {
 
-const listButtonArr = Array.from(document.querySelectorAll(".createListBtn"))
+  const listButtonArr = Array.from(document.querySelectorAll(".createListBtn"))
 
-listButtonArr.forEach(item => {
-  item.addEventListener("click", () => {
-    const parent = item.parentElement.parentElement
-    console.log(parent)
+  listButtonArr.forEach(item => {
+    item.addEventListener("click", () => {
+      const parent = item.parentElement.parentElement
+      console.log(parent)
+  
+      let infoArr = []
+      const content = `. ${prompt("title?")}`
+      const dueDate = prompt("due date?")
+      const priority = prompt("priority?")
+  
+      infoArr.push(content, dueDate, priority)
+  
+      item.parentElement.nextSibling.appendChild(addList(parent, infoArr))
+      addListDeleteButtonEvent()
+  
+      localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+      localStorage.setItem("groupsObj", JSON.stringify(groups))
+  
+      listCount++
+      localStorage.setItem("listCount", listCount)
+    })
+  });
+}
 
-    let infoArr = []
-    const content = `. ${prompt("title?")}`
-    const dueDate = prompt("due date?")
-    const priority = prompt("priority?")
+// function to add event listener to list delete button
+const addListDeleteButtonEvent = () => {
 
-    infoArr.push(content, dueDate, priority)
+  const listDeleteButtonArr = Array.from(document.querySelectorAll(".listDeleteBtn"))
 
-    item.parentElement.nextSibling.appendChild(addList(parent, infoArr))
+  listDeleteButtonArr.forEach(item => {
 
-    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-    localStorage.setItem("groupsObj", JSON.stringify(groups))
+    item.addEventListener("mousedown", () => {
+      item.firstChild.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
+    })
+    // deletes list
+    item.addEventListener("click", () => {
+      const groupBody = item.parentElement.parentElement.parentElement
+      console.log(groupBody)
+      groupBody.removeChild(item.parentElement.parentElement)
 
-    listCount++
-    localStorage.setItem("listCount", listCount)
-  })
-});
+      delete groups[item.id]
 
-// event listener to delete a list
+      localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+      localStorage.setItem("groupsObj", JSON.stringify(groups))
 
-const listDeleteButtonArr = Array.from(document.querySelectorAll(".listDeleteBtn"))
+      console.log(item.id, "group deleted")
+      console.log(groups)
+    })
+  });
+}
 
-listDeleteButtonArr.forEach(item => {
 
-  item.addEventListener("mousedown", () => {
-    item.firstChild.style.backgroundImage = "linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%)"
-  })
 
-  item.addEventListener("click", () => {
-    const groupBody = item.parentElement.parentElement.parentElement
-    console.log(groupBody)
-    groupBody.removeChild(item.parentElement.parentElement)
 
-    delete groups[item.id]
 
-    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-    localStorage.setItem("groupsObj", JSON.stringify(groups))
+// initalise everything
 
-    console.log(item.id, "group deleted")
-    console.log(groups)
-  })
-});
+groupContainer.innerHTML = localStorage.getItem("groupsHtml")
 
-// open/close form functions
+// initialise groups obj and groupsObj key value pair in localStorage
+let groups
+
+if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
+  groups = {}
+  localStorage.setItem("groupsObj", JSON.stringify({}))
+} else {
+  groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
+}
+
+console.log(groups)
+
+//initialise groupCount variable and groupCount key value pair in localStorage
+
+let groupCount
+
+if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
+  groupCount = 0
+  localStorage.setItem("groupCount", groupCount)
+} else {
+  groupCount = localStorage.getItem("groupCount")
+}
+
+console.log(groupCount)
+
+// initialise listCount and in local storage
+let listCount
+
+if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
+  listCount = 0
+  localStorage.setItem("listCount", listCount)
+} else {
+  listCount = localStorage.getItem("listCount")
+}
+
+console.log(listCount)
+
+// add event listeners to buttons created before reload (WONT BE NEEDED AFTER WE CHANGE IT SO HTML ISNT STORED IN LOCAL STORAGE)
+addGroupDeleteBtnEvent()
+addListButtonEvent()
+addListDeleteButtonEvent()
+
+
+
+
+
+
+// open/close form functions/ listeners
 
 function openForm() {
   document.getElementById("myForm").style.display = "block";
