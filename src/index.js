@@ -89,7 +89,7 @@ const clearInputs = () => {
 }
 
 // event listener to create groups
-const createGroupBtn = document.querySelector(".create-btn");
+const createGroupBtn = document.querySelector(".group-create-btn");
 
 createGroupBtn.addEventListener("click", () => {
   const nameInput = document.querySelector(".name-input");
@@ -100,7 +100,7 @@ createGroupBtn.addEventListener("click", () => {
   groups[groupCount] = {}
   console.log(groups)
   clearInputs()
-  closeForm()
+  closeGroupForm()
   addGroupDeleteBtnEvent()
   addListButtonEvent()
   localStorage.setItem("groupsHtml", groupContainer.innerHTML)
@@ -109,7 +109,7 @@ createGroupBtn.addEventListener("click", () => {
   localStorage.setItem("groupCount", groupCount)
 })
 
-const inputForm = document.querySelector(".form-popup")
+const inputForm = document.querySelector(".group-form-popup")
 
 // prevents the form being able to be submitted by just pressing enter
 inputForm.addEventListener("submit", (e) => {
@@ -158,6 +158,7 @@ const addList = (group, listInfo) => {
 
     const deleteBtn = document.createElement("div")
     deleteBtn.classList.add("listDeleteBtn")
+    deleteBtn.setAttribute("id", listCount)
 
     const deleteBtnInner = document.createElement("div")
 
@@ -218,11 +219,12 @@ const addListDeleteButtonEvent = () => {
     })
     // deletes list
     item.addEventListener("click", () => {
+      
       const groupBody = item.parentElement.parentElement.parentElement
-      console.log(groupBody)
+      
       groupBody.removeChild(item.parentElement.parentElement)
 
-      delete groups[item.id]
+      delete groups[groupBody.parentElement.id][item.id]
 
       localStorage.setItem("groupsHtml", groupContainer.innerHTML)
       localStorage.setItem("groupsObj", JSON.stringify(groups))
@@ -286,27 +288,50 @@ addListDeleteButtonEvent()
 
 
 
+// open/close group form functions/listeners
 
-
-// open/close form functions/ listeners
-
-function openForm() {
-  document.getElementById("myForm").style.display = "block";
+function openGroupForm() {
+  document.getElementById("myGroupForm").style.display = "block";
 }
 
-function closeForm() {
-  document.getElementById("myForm").style.display = "none";
+function closeGroupForm() {
+  document.getElementById("myGroupForm").style.display = "none";
 }
 
-const openBtn = document.querySelector(".open-button")
+const groupFormOpenBtn = document.querySelector(".open-button")
 
-openBtn.addEventListener("click", () => {
-  openForm()
+groupFormOpenBtn.addEventListener("click", () => {
+  openGroupForm()
 })
 
-const closeBtn = document.querySelector(".cancel")
+const groupFormCloseBtn = document.querySelector(".group-cancel-btn")
 
-closeBtn.addEventListener("click", () => {
-  closeForm()
+groupFormCloseBtn.addEventListener("click", () => {
+  closeGroupForm()
+  clearInputs()
+})
+
+// open/close group form functions/listeners
+
+function openListForm() {
+  document.getElementById("myListForm").style.display = "block";
+}
+
+function closeListForm() {
+  document.getElementById("myListForm").style.display = "none";
+}
+
+const listFormOpenBtns = Array.from(document.querySelectorAll(".createListBtn"))
+
+listFormOpenBtns.forEach(item => {
+  item.addEventListener("click", () => {
+    openListForm()
+  })
+})
+
+const listFormCloseBtn = document.querySelector(".list-cancel-btn")
+
+listFormCloseBtn.addEventListener("click", () => {
+  closeListForm()
   clearInputs()
 })

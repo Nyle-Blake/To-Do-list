@@ -281,7 +281,7 @@ footer {
 }
 
 /* The popup form - hidden by default */
-.form-popup {
+.group-form-popup, .list-form-popup {
   display: none;
   position: absolute;
   top: 42vh;
@@ -292,7 +292,7 @@ footer {
 }
 
 /* Add styles to the form container */
-.form-container {
+.group-form-container, .list-form-container {
   max-width: 300px;
   padding: 16px;
   background-image: linear-gradient(92.88deg, #455EB5 9.16%, #5643CC 43.89%, #673FD7 64.72%);
@@ -300,7 +300,7 @@ footer {
 }
 
 /* Full-width input fields */
-.form-container input[type=text] {
+.group-form-container input[type=text], .list-form-container input[type=text], .list-form-container select {
   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
@@ -311,13 +311,13 @@ footer {
 }
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus{
+.group-form-container input[type=text]:focus, .list-form-container input[type=text]:focus{
   background-color: #ddd;
   outline: none;
 }
 
 /* Set a style for the submit/login button */
-.form-container .btn {
+.group-form-container .btn, .list-form-container .btn {
   background-color: #04AA6D;
   color: white;
   padding: 16px 20px;
@@ -330,11 +330,15 @@ footer {
 }
 
 /* Add a red background color to the cancel button */
-.form-container .cancel {
+.group-form-container .group-cancel-btn, .list-form-container .list-cancel-btn {
   background-color: red;
 }
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
+.group-form-container .btn:hover, .open-button:hover {
   opacity: 1;
+}
+
+option {
+  border-radius: 2px;
 }
