@@ -77,18 +77,13 @@
 
 .listHeader {
   display: flex;
-  justify-content: space-between;
-  padding-right: 20%;
+  justify-content: start;
+  gap: 10%;
   font-size: 16px;
 }
 
-.listHeader h3 {
-  text-decoration: underline;
-}
-
-.listHeader span, .groupHeader span {
-  cursor: pointer;
-  color: red;
+.listHeader > *{
+  flex: 1fr;
 }
 
 .listBody {

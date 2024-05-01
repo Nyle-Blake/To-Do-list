@@ -125,16 +125,15 @@ inputForm.addEventListener("submit", (e) => {
 const addList = (group, listInfo) => {
 
   class CreateList {
-    constructor(content, dueDate, priority) {
+    constructor(content, priority) {
       this.content = content
-      this.dueDate = dueDate
       this.priority = priority
     }
   }
   
-  groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1], listInfo[2])
+  groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1])
 
-  const createListHtml = () => { // group as parameter
+  const createListHtml = () => {
 
     const newDiv = document.createElement("div")
     newDiv.classList.add("list")
@@ -150,11 +149,9 @@ const addList = (group, listInfo) => {
     newDiv.appendChild(divBody)
 
     let content = document.createElement("h3")
-    content.textContent = listInfo[0]
-    let dueDate = document.createElement("p")
-    dueDate.textContent = `Due-date: ${listInfo[1]}`
+    content.textContent = `. ${listInfo[0]}`
     let priority = document.createElement("p")
-    priority.textContent = `Priority: ${listInfo[2]}`
+    priority.textContent = `Priority: ${listInfo[1]}`
 
     const deleteBtn = document.createElement("div")
     deleteBtn.classList.add("listDeleteBtn")
@@ -166,7 +163,6 @@ const addList = (group, listInfo) => {
 
     divHeader.appendChild(deleteBtn)
       .insertAdjacentElement('afterend', priority)
-      .insertAdjacentElement('afterend', dueDate)
 
     divBody.appendChild(content)
 
@@ -175,36 +171,49 @@ const addList = (group, listInfo) => {
     return newDiv
   }
 
-  return createListHtml() //groups as arg
+  return createListHtml()
 }
 
-// function to add event listener to add list button
+// function to add event listener to open the list form
+let currentList
+
 const addListButtonEvent = () => {
 
   const listButtonArr = Array.from(document.querySelectorAll(".createListBtn"))
 
   listButtonArr.forEach(item => {
     item.addEventListener("click", () => {
-      const parent = item.parentElement.parentElement
-      console.log(parent)
-  
-      let infoArr = []
-      const content = `. ${prompt("title?")}`
-      const dueDate = prompt("due date?")
-      const priority = prompt("priority?")
-  
-      infoArr.push(content, dueDate, priority)
-  
-      item.parentElement.nextSibling.appendChild(addList(parent, infoArr))
-      addListDeleteButtonEvent()
-  
-      localStorage.setItem("groupsHtml", groupContainer.innerHTML)
-      localStorage.setItem("groupsObj", JSON.stringify(groups))
-  
-      listCount++
-      localStorage.setItem("listCount", listCount)
+      openListForm()
+      currentList = item
     })
   });
+}
+
+// function to add event listener to create button on list form
+const addCreateListEvent = () => {
+  const listFormCreateBtn = document.querySelector(".list-create-btn")
+
+  listFormCreateBtn.addEventListener("click", () => {
+
+    const parent = currentList.parentElement.parentElement
+    console.log(parent)
+
+    let infoArr = []
+    infoArr.push(document.querySelector(".listNameInput").value)
+    infoArr.push(document.querySelector(".prioritySelect").value)
+
+    currentList.parentElement.nextSibling.appendChild(addList(parent, infoArr))
+    addListDeleteButtonEvent()
+
+    localStorage.setItem("groupsHtml", groupContainer.innerHTML)
+    localStorage.setItem("groupsObj", JSON.stringify(groups))
+
+    listCount++
+    localStorage.setItem("listCount", listCount)
+
+    clearInputs()
+    closeListForm()
+  })
 }
 
 // function to add event listener to list delete button
@@ -284,6 +293,7 @@ console.log(listCount)
 addGroupDeleteBtnEvent()
 addListButtonEvent()
 addListDeleteButtonEvent()
+addCreateListEvent()
 
 
 
