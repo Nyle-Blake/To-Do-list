@@ -5,11 +5,6 @@ const groupContainer = document.querySelector(".group-container")
 // creates Html of a group and has listBtn eventListener and deleteBtn eventlistener
 const createGroupHtml = (groupName) => {
 
-  if (groupName.length <= 1 || groupName.length > 12) {
-    alert("Name must be more than 1 but less than 13 characters")
-    return
-  }
-  
   const newDiv = document.createElement("div")
   newDiv.classList.add("group")
   newDiv.id = groupCount
@@ -94,6 +89,11 @@ const createGroupBtn = document.querySelector(".group-create-btn");
 createGroupBtn.addEventListener("click", () => {
   const nameInput = document.querySelector(".name-input");
 
+  if (!nameInput.checkValidity()) {
+    nameInput.setCustomValidity("Name must be at least 2 characters long")
+    return
+  }
+
   groupContainer.appendChild(createGroupHtml(nameInput.value))
 
   console.log(groupCount, groups)
@@ -130,7 +130,7 @@ const addList = (group, listInfo) => {
       this.priority = priority
     }
   }
-  
+
   groups[group.id][listCount] = new CreateList(listInfo[0], listInfo[1])
 
   const createListHtml = () => {
@@ -181,10 +181,10 @@ const addListButtonEvent = () => {
 
   const listButtonArr = Array.from(document.querySelectorAll(".createListBtn"))
 
-  listButtonArr.forEach(item => {
-    item.addEventListener("click", () => {
+  listButtonArr.forEach(btn => {
+    btn.addEventListener("click", () => {
       openListForm()
-      currentList = item
+      currentList = btn
     })
   });
 }
@@ -198,9 +198,17 @@ const addCreateListEvent = () => {
     const parent = currentList.parentElement.parentElement
     console.log(parent)
 
+    const listNameInput = document.querySelector(".list-name-input")
+    const prioritySelect = document.querySelector(".priority-select")
+
+    if (!listNameInput.checkValidity()) {
+      listNameInput.setCustomValidity("Name must be at least 2 characters long")
+      return
+    }
+
     let infoArr = []
-    infoArr.push(document.querySelector(".listNameInput").value)
-    infoArr.push(document.querySelector(".prioritySelect").value)
+    infoArr.push(listNameInput.value)
+    infoArr.push(prioritySelect.value)
 
     currentList.parentElement.nextSibling.appendChild(addList(parent, infoArr))
     addListDeleteButtonEvent()
@@ -228,9 +236,9 @@ const addListDeleteButtonEvent = () => {
     })
     // deletes list
     item.addEventListener("click", () => {
-      
+
       const groupBody = item.parentElement.parentElement.parentElement
-      
+
       groupBody.removeChild(item.parentElement.parentElement)
 
       delete groups[groupBody.parentElement.id][item.id]
@@ -250,50 +258,90 @@ const addListDeleteButtonEvent = () => {
 
 // initalise everything
 
+let groups, groupCount, listCount
+
 groupContainer.innerHTML = localStorage.getItem("groupsHtml")
 
+window.addEventListener("load", () => {
+
+  // initialise groups obj and groupsObj key value pair in localStorage
+  if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
+    groups = {}
+    localStorage.setItem("groupsObj", JSON.stringify({}))
+  } else {
+    groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
+  }
+
+  console.log(groups)
+
+  //initialise groupCount variable and groupCount key value pair in localStorage
+
+
+  if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
+    groupCount = 0
+    localStorage.setItem("groupCount", groupCount)
+  } else {
+    groupCount = localStorage.getItem("groupCount")
+  }
+
+  console.log(groupCount)
+
+  // initialise listCount and in local storage
+
+  if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
+    listCount = 0
+    localStorage.setItem("listCount", listCount)
+  } else {
+    listCount = localStorage.getItem("listCount")
+  }
+
+  console.log(listCount)
+
+  addGroupDeleteBtnEvent()
+  addListButtonEvent()
+  addListDeleteButtonEvent()
+  addCreateListEvent()
+})
 // initialise groups obj and groupsObj key value pair in localStorage
-let groups
 
-if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
-  groups = {}
-  localStorage.setItem("groupsObj", JSON.stringify({}))
-} else {
-  groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
-}
 
-console.log(groups)
+// if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
+//   groups = {}
+//   localStorage.setItem("groupsObj", JSON.stringify({}))
+// } else {
+//   groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
+// }
+
+// console.log(groups)
 
 //initialise groupCount variable and groupCount key value pair in localStorage
 
-let groupCount
 
-if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
-  groupCount = 0
-  localStorage.setItem("groupCount", groupCount)
-} else {
-  groupCount = localStorage.getItem("groupCount")
-}
+// if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
+//   groupCount = 0
+//   localStorage.setItem("groupCount", groupCount)
+// } else {
+//   groupCount = localStorage.getItem("groupCount")
+// }
 
-console.log(groupCount)
+// console.log(groupCount)
 
 // initialise listCount and in local storage
-let listCount
 
-if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
-  listCount = 0
-  localStorage.setItem("listCount", listCount)
-} else {
-  listCount = localStorage.getItem("listCount")
-}
+// if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
+//   listCount = 0
+//   localStorage.setItem("listCount", listCount)
+// } else {
+//   listCount = localStorage.getItem("listCount")
+// }
 
-console.log(listCount)
+// console.log(listCount)
 
 // add event listeners to buttons created before reload (WONT BE NEEDED AFTER WE CHANGE IT SO HTML ISNT STORED IN LOCAL STORAGE)
-addGroupDeleteBtnEvent()
-addListButtonEvent()
-addListDeleteButtonEvent()
-addCreateListEvent()
+// addGroupDeleteBtnEvent()
+// addListButtonEvent()
+// addListDeleteButtonEvent()
+// addCreateListEvent()
 
 
 
@@ -345,3 +393,6 @@ listFormCloseBtn.addEventListener("click", () => {
   closeListForm()
   clearInputs()
 })
+
+// form validation
+

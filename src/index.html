@@ -28,43 +28,41 @@
 
     </div>
     <div class="container">
-      <!-- start of form -->
+      <!-- start of First form -->
 
       <!-- A button to open the popup form -->
       <button class="open-button">Create group</button>
 
       <!-- The form -->
       <div class="group-form-popup" id="myGroupForm">
-        <form class="group-form-container">
+        <form class="group-form-container" onsubmit="false">
           <h3>Group Name:</h3>
 
-          <input class="name-input" type="text" placeholder="Enter Name" required>
+          <input class="name-input" type="text" placeholder="Enter Name" minlength="2" required>
 
-          <button type="button" class="btn group-create-btn">Create</button>
-          <button type="button" class="btn group-cancel-btn">Cancel</button>
+          <button type="submit" class="btn group-create-btn">Create</button>
+          <button class="btn group-cancel-btn">Cancel</button>
         </form>
       </div>
 
-      <!-- end of form -->
+      <!-- end of First form -->
 
-
-
-      <!-- START OF SECOND FORM-->
+      <!-- end of Second form -->
 
       <!-- The form -->
       <div class="list-form-popup" id="myListForm">
-        <form class="list-form-container">
+        <form class="list-form-container" onsubmit="false">
           <h3>List info:</h3>
 
-          <input class="listNameInput" type="text" placeholder="Enter task" required>
-          <select class="prioritySelect">
+          <input class="list-name-input" type="text" placeholder="Enter task" minlength="2" required>
+          <select class="priority-select" required>
             <option value="low">low</option>
             <option value="moderate">moderate</option>
             <option value="high">high</option>
           </select>
 
-          <button type="button" class="btn list-create-btn">Create</button>
-          <button type="button" class="btn list-cancel-btn">Cancel</button>
+          <button type="submit" class="btn list-create-btn">Create</button>
+          <button class="btn list-cancel-btn">Cancel</button>
         </form>
       </div>
 
