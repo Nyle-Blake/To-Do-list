@@ -262,6 +262,7 @@ let groups, groupCount, listCount
 
 groupContainer.innerHTML = localStorage.getItem("groupsHtml")
 
+// initialise / get from local storage on window load
 window.addEventListener("load", () => {
 
   // initialise groups obj and groupsObj key value pair in localStorage
@@ -302,48 +303,6 @@ window.addEventListener("load", () => {
   addListDeleteButtonEvent()
   addCreateListEvent()
 })
-// initialise groups obj and groupsObj key value pair in localStorage
-
-
-// if (localStorage.getItem("groupsObj") == undefined || localStorage.getItem("groupsObj") == null) {
-//   groups = {}
-//   localStorage.setItem("groupsObj", JSON.stringify({}))
-// } else {
-//   groups = JSON.parse(localStorage.getItem("groupsObj")) //json parse here
-// }
-
-// console.log(groups)
-
-//initialise groupCount variable and groupCount key value pair in localStorage
-
-
-// if (localStorage.getItem("groupCount") == undefined || localStorage.getItem("groupCount") == null) {
-//   groupCount = 0
-//   localStorage.setItem("groupCount", groupCount)
-// } else {
-//   groupCount = localStorage.getItem("groupCount")
-// }
-
-// console.log(groupCount)
-
-// initialise listCount and in local storage
-
-// if (localStorage.getItem("listCount") == undefined || localStorage.getItem("listCount") == null) {
-//   listCount = 0
-//   localStorage.setItem("listCount", listCount)
-// } else {
-//   listCount = localStorage.getItem("listCount")
-// }
-
-// console.log(listCount)
-
-// add event listeners to buttons created before reload (WONT BE NEEDED AFTER WE CHANGE IT SO HTML ISNT STORED IN LOCAL STORAGE)
-// addGroupDeleteBtnEvent()
-// addListButtonEvent()
-// addListDeleteButtonEvent()
-// addCreateListEvent()
-
-
 
 
 // open/close group form functions/listeners
@@ -393,6 +352,3 @@ listFormCloseBtn.addEventListener("click", () => {
   closeListForm()
   clearInputs()
 })
-
-// form validation
-
